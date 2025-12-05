@@ -1,5 +1,6 @@
 module.exports = {
-  plugins: [
-    require('postcss-discard-empty')
-  ]
-}
+  plugins: {
+    autoprefixer: {},
+    tailwindcss: {},
+  },
+};
