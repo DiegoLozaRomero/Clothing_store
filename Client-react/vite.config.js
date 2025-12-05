@@ -1,13 +1,7 @@
-
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-
-
+// vite.config.js
 export default defineConfig({
-  plugins: [
-    react(),
-    Ignore({
-      patterns: ['css'] // Ignora errores de CSS
-    })
-  ]
+  // ... otras configs
+  build: {
+    cssMinify: false, // Deshabilita la minificación
+  },
 });
