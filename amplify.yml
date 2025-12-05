@@ -4,7 +4,9 @@ frontend:
     preBuild:
       commands:
         - cd Client-react
-        - npm install
+        # --- LÍNEA CORREGIDA ---
+        - npm install --force
+        # ----------------------
     build:
       commands:
         - npm run build
