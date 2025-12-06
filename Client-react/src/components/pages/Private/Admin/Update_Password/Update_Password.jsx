@@ -104,21 +104,24 @@ if (newPassword !== confirmPassword) {
 }
 
 
-    try {
-      const response = await axios.put(
-        "http://127.0.0.1:5000/UpdatePasswordAdmin",
-        {
-          id: user.id,
-          Password: currentPassword,
-          NewPassword: newPassword,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+    // 🚨 Asegúrate de que API_BASE_URL esté definido al inicio del archivo, por ejemplo:
+// const API_BASE_URL = import.meta.env.VITE_API_URL;
+
+    try {
+      const response = await axios.put(
+        `${API_BASE_URL}/UpdatePasswordAdmin`,
+        {
+          id: user.id,
+          Password: currentPassword,
+          NewPassword: newPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
 
 // Confirmación de éxito

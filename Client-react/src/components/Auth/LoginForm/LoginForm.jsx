@@ -6,50 +6,53 @@ import axios from 'axios';
 import ForgotPassword from '../ForgotPassword/ForgotPassword';
 import ResetPassword from '../ForgotPassword/ResetPassword';
 
+// 🚨 1. AÑADIR esta línea para obtener la URL base (http://3.139.232.5:5000)
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [alert, setAlert] = useState({ show: false, message: '', type: '' });
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [rememberMe, setRememberMe] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [alert, setAlert] = useState({ show: false, message: '', type: '' });
 
-  const [currentView, setCurrentView] = useState('login');
-  const [userEmail, setUserEmail] = useState('');
+    const [currentView, setCurrentView] = useState('login');
+    const [userEmail, setUserEmail] = useState('');
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  const showMessage = (message, type) => {
-    setAlert({ show: true, message, type });
-    setTimeout(() => setAlert({ show: false, message: '', type: '' }), 5000);
-  };
+    const showMessage = (message, type) => {
+        setAlert({ show: true, message, type });
+        setTimeout(() => setAlert({ show: false, message: '', type: '' }), 5000);
+    };
 
-  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+    const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    if (!email || !password) return showMessage('Por favor, completa todos los campos', 'error');
-    if (!isValidEmail(email)) return showMessage('Correo electrónico inválido', 'error');
+        if (!email || !password) return showMessage('Por favor, completa todos los campos', 'error');
+        if (!isValidEmail(email)) return showMessage('Correo electrónico inválido', 'error');
 
-    setIsLoading(true);
-    try {
-      const response = await axios.post('http://127.0.0.1:5000/login', {
-        Email: email,
-        Password: password,
-      });
+        setIsLoading(true);
+        try {
+            // 🚨 2. REEMPLAZO: Usar API_BASE_URL en lugar de localhost
+            const response = await axios.post(`${API_BASE_URL}/login`, {
+                Email: email,
+                Password: password,
+            });
 
-      console.log('✅ Respuesta COMPLETA del servidor:', response.data);
+            console.log('✅ Respuesta COMPLETA del servidor:', response.data);
 
-      const { message, user } = response.data;
+            const { message, user } = response.data;
 
-      if (!user) {
-        showMessage('Respuesta inesperada del servidor.', 'error');
-        return;
-      }
-
+            if (!user) {
+                showMessage('Respuesta inesperada del servidor.', 'error');
+                return;
+            }
       // MOSTRAR TODOS LOS CAMPOS DISPONIBLES PARA DEBUG
       console.log(' Campos disponibles en user:', Object.keys(user));
       

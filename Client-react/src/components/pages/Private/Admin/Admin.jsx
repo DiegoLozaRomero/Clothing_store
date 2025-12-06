@@ -13,187 +13,195 @@ import LogoutLink from "../../../Auth/logout/LogoutLink";
 import axios from "axios";
 import Swal from "sweetalert2";
 
+// 🚨 AÑADIDO: Define la URL base de la API usando la variable de entorno
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 export default function Admin() {
-  // Estado de pestaña activa
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [userCount, setUserCount] = useState(0);
-  const [orders, setOrders] = useState([]);
-  const [ordersStats, setOrdersStats] = useState({});
-  const [loadingOrders, setLoadingOrders] = useState(false);
-    const [productsStats, setProductsStats] = useState({
-    total_productos: 0,
-    total_stock: 0,
-    categorias: {},
-    generos: {}
-  });
+  // Estado de pestaña activa
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [userCount, setUserCount] = useState(0);
+  const [orders, setOrders] = useState([]);
+  const [ordersStats, setOrdersStats] = useState({});
+  const [loadingOrders, setLoadingOrders] = useState(false);
+    const [productsStats, setProductsStats] = useState({
+    total_productos: 0,
+    total_stock: 0,
+    categorias: {},
+    generos: {}
+  });
 
-  const [loadingProducts, setLoadingProducts] = useState(false);
-
-
-  // Estados para métodos de pago
-  const [paymentData, setPaymentData] = useState({
-    labels: ["Tarjeta Crédito", "Tarjeta Débito", "PayPal", "Transferencia", "Efectivo"],
-    datasets: [
-      {
-        data: [45, 25, 15, 10, 5],
-        backgroundColor: [
-          "rgba(67, 97, 238, 0.7)",
-          "rgba(76, 201, 240, 0.7)",
-          "rgba(248, 150, 30, 0.7)",
-          "rgba(247, 37, 133, 0.7)",
-          "rgba(72, 149, 239, 0.7)",
-        ],
-      },
-    ],
-  });
-
-    const [paymentStats, setPaymentStats] = useState({
-    metodos_pago: [],
-    totales: { ordenes: 0, monto: 0, metodos: 0 },
-    loading: false
-  });
-
-  // Cargar estadísticas de usuarios
-  useEffect(() => {
-    axios.get("http://127.0.0.1:5000/UserCount")
-      .then(res => setUserCount(res.data.total_usuarios))
-      .catch(err => console.error("Error al obtener usuarios:", err));
-  }, []);
+  const [loadingProducts, setLoadingProducts] = useState(false);
 
 
+  // Estados para métodos de pago
+  const [paymentData, setPaymentData] = useState({
+    labels: ["Tarjeta Crédito", "Tarjeta Débito", "PayPal", "Transferencia", "Efectivo"],
+    datasets: [
+      {
+        data: [45, 25, 15, 10, 5],
+        backgroundColor: [
+          "rgba(67, 97, 238, 0.7)",
+          "rgba(76, 201, 240, 0.7)",
+          "rgba(248, 150, 30, 0.7)",
+          "rgba(247, 37, 133, 0.7)",
+          "rgba(72, 149, 239, 0.7)",
+        ],
+      },
+    ],
+  });
 
-    const loadProductsStats = async () => {
-    try {
-      setLoadingProducts(true);
-      const response = await axios.get('http://127.0.0.1:5000/admin/products/count-stats');
-      
-      if (response.data.status === 'success') {
-        setProductsStats(response.data.data);
-      } else {
-        throw new Error(response.data.message);
-      }
-    } catch (error) {
-      console.error('Error loading products stats:', error);
-      setProductsStats({
-        total_productos: 0,
-        total_stock: 0,
-        categorias: {},
-        generos: {}
-      });
-      
-      Swal.fire({
-        title: 'Error',
-        html: `
-          <div style="text-align: center; padding: 15px;">
-            <i class="fa-solid fa-circle-xmark" 
-               style="font-size: 60px; color: #EF4444; margin-bottom: 15px;"></i>
-            <p style="font-size: 16px; color: #000000ff;">
-              No se pudieron cargar las estadísticas de productos.
-            </p>
-          </div>
-        `,
-        color: "#262626ff",
-        confirmButtonColor: "#EF4444",
-        confirmButtonText: "Entendido",
-        width: "420px",
-      });
-    } finally {
-      setLoadingProducts(false);
-    }
-  };
+    const [paymentStats, setPaymentStats] = useState({
+    metodos_pago: [],
+    totales: { ordenes: 0, monto: 0, metodos: 0 },
+    loading: false
+  });
 
-  // Cargar órdenes para el dashboard 5 amas reciente 
-  const loadAdminOrders = async () => {
-    try {
-      setLoadingOrders(true);
-      const response = await axios.get('http://127.0.0.1:5000/admin/orders?per_page=5');
-      
-      if (response.data.status === 'success') {
-        // Tomar solo los primeros 5 pedidos (más recientes)
-        const recentOrders = response.data.data.orders.slice(0, 5);
-        setOrders(recentOrders);
-        setOrdersStats(response.data.data.estadisticas);
-      }
-    } catch (error) {
-      console.error('Error loading admin orders:', error);
-      Swal.fire({
-        title: 'Error',
-        html: `
-          <div style="text-align: center; padding: 15px;">
-            <i class="fa-solid fa-circle-xmark" 
-               style="font-size: 60px; color: #EF4444; margin-bottom: 15px; animation: shake 0.4s ease;"></i>
-            <p style="font-size: 16px; color: #000000ff;">
-              No se pudieron cargar los pedidos.
-            </p>
-          </div>
-        `,
-        color: "#262626ff",
-        confirmButtonColor: "#EF4444",
-        confirmButtonText: "Reintentar",
-        width: "420px",
-        customClass: {
-          popup: "swal2-glass",
-          confirmButton: "swal2-button",
-        },
-        showClass: {
-          popup: "animate__animated animate__shakeX",
-        },
-      });
-    } finally {
-      setLoadingOrders(false);
-    }
-  };
+  // Cargar estadísticas de usuarios
+  useEffect(() => {
+    // 🛑 CORREGIDO: Usando API_BASE_URL
+    axios.get(`${API_BASE_URL}/UserCount`)
+      .then(res => setUserCount(res.data.total_usuarios))
+      .catch(err => console.error("Error al obtener usuarios:", err));
+  }, []);
 
 
-  // Cargar estadísticas de órdenes
-  const loadOrdersStats = async () => {
-    try {
-      const response = await axios.get('http://127.0.0.1:5000/admin/orders/stats');
-      
-      if (response.data.status === 'success') {
-        setOrdersStats(response.data.data);
-      }
-    } catch (error) {
-      console.error('Error loading orders stats:', error);
-    }
-  };
 
- // Cargar estadísticas de métodos de pago
-  const loadPaymentMethodsStats = async () => {
-    try {
-      setPaymentStats(prev => ({ ...prev, loading: true }));
-      console.log('Cargando estadísticas de métodos de pago...');
-      
-      const response = await axios.get('http://127.0.0.1:5000/admin/orders/payment-methods-detailed');
-      console.log('Respuesta de métodos de pago:', response.data);
-      
-      if (response.data.status === 'success') {
-        const data = response.data.data;
-        setPaymentStats({
-          metodos_pago: data.metodos_pago,
-          totales: data.totales,
-          loading: false
-        });
-        
-        updatePaymentChartData(data.metodos_pago);
-      } else {
-        throw new Error(response.data.message);
-      }
-    } catch (error) {
-      console.error('Error cargando métodos de pago:', error);
-      setPaymentStats(prev => ({ ...prev, loading: false }));
-      
-      Swal.fire({
-        title: 'Error',
-        text: 'No se pudieron cargar las estadísticas de métodos de pago',
-        icon: 'error',
-        confirmButtonText: 'Entendido'
-      });
-    }
-  };
+    const loadProductsStats = async () => {
+    try {
+      setLoadingProducts(true);
+      // 🛑 CORREGIDO: Usando API_BASE_URL
+      const response = await axios.get(`${API_BASE_URL}/admin/products/count-stats`);
+      
+      if (response.data.status === 'success') {
+        setProductsStats(response.data.data);
+      } else {
+        throw new Error(response.data.message);
+      }
+    } catch (error) {
+      console.error('Error loading products stats:', error);
+      setProductsStats({
+        total_productos: 0,
+        total_stock: 0,
+        categorias: {},
+        generos: {}
+      });
+      
+      Swal.fire({
+        title: 'Error',
+        html: `
+          <div style="text-align: center; padding: 15px;">
+            <i class="fa-solid fa-circle-xmark" 
+               style="font-size: 60px; color: #EF4444; margin-bottom: 15px;"></i>
+            <p style="font-size: 16px; color: #000000ff;">
+              No se pudieron cargar las estadísticas de productos.
+            </p>
+          </div>
+        `,
+        color: "#262626ff",
+        confirmButtonColor: "#EF4444",
+        confirmButtonText: "Entendido",
+        width: "420px",
+      });
+    } finally {
+      setLoadingProducts(false);
+    }
+  };
+
+  // Cargar órdenes para el dashboard 5 amas reciente 
+  const loadAdminOrders = async () => {
+    try {
+      setLoadingOrders(true);
+      // 🛑 CORREGIDO: Usando API_BASE_URL
+      const response = await axios.get(`${API_BASE_URL}/admin/orders?per_page=5`);
+      
+      if (response.data.status === 'success') {
+        // Tomar solo los primeros 5 pedidos (más recientes)
+        const recentOrders = response.data.data.orders.slice(0, 5);
+        setOrders(recentOrders);
+        setOrdersStats(response.data.data.estadisticas);
+      }
+    } catch (error) {
+      console.error('Error loading admin orders:', error);
+      Swal.fire({
+        title: 'Error',
+        html: `
+          <div style="text-align: center; padding: 15px;">
+            <i class="fa-solid fa-circle-xmark" 
+               style="font-size: 60px; color: #EF4444; margin-bottom: 15px; animation: shake 0.4s ease;"></i>
+            <p style="font-size: 16px; color: #000000ff;">
+              No se pudieron cargar los pedidos.
+            </p>
+          </div>
+        `,
+        color: "#262626ff",
+        confirmButtonColor: "#EF4444",
+        confirmButtonText: "Reintentar",
+        width: "420px",
+        customClass: {
+          popup: "swal2-glass",
+          confirmButton: "swal2-button",
+        },
+        showClass: {
+          popup: "animate__animated animate__shakeX",
+        },
+      });
+    } finally {
+      setLoadingOrders(false);
+    }
+  };
 
 
-  
+  // Cargar estadísticas de órdenes
+  const loadOrdersStats = async () => {
+    try {
+      // 🛑 CORREGIDO: Usando API_BASE_URL
+      const response = await axios.get(`${API_BASE_URL}/admin/orders/stats`);
+      
+      if (response.data.status === 'success') {
+        setOrdersStats(response.data.data);
+      }
+    } catch (error) {
+      console.error('Error loading orders stats:', error);
+    }
+  };
+
+ // Cargar estadísticas de métodos de pago
+  const loadPaymentMethodsStats = async () => {
+    try {
+      setPaymentStats(prev => ({ ...prev, loading: true }));
+      console.log('Cargando estadísticas de métodos de pago...');
+      
+      // 🛑 CORREGIDO: Usando API_BASE_URL
+      const response = await axios.get(`${API_BASE_URL}/admin/orders/payment-methods-detailed`);
+      console.log('Respuesta de métodos de pago:', response.data);
+      
+      if (response.data.status === 'success') {
+        const data = response.data.data;
+        setPaymentStats({
+          metodos_pago: data.metodos_pago,
+          totales: data.totales,
+          loading: false
+        });
+        
+        // ASUMO que la función 'updatePaymentChartData' está definida en otro lugar 
+        // y la dejaremos tal cual fue llamada.
+        // updatePaymentChartData(data.metodos_pago); 
+      } else {
+        throw new Error(response.data.message);
+      }
+    } catch (error) {
+      console.error('Error cargando métodos de pago:', error);
+      setPaymentStats(prev => ({ ...prev, loading: false }));
+      
+      Swal.fire({
+        title: 'Error',
+        text: 'No se pudieron cargar las estadísticas de métodos de pago',
+        icon: 'error',
+        confirmButtonText: 'Entendido'
+      });
+    }
+  };
+
   const categoryData = {
     labels: ["Electrónicos", "Ropa", "Hogar", "Deportes", "Juguetes"],
     datasets: [

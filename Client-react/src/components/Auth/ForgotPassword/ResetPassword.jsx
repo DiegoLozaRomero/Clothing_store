@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './ForgotPassword.css';
 
+// 🚨 1. AÑADIR esta línea para obtener la URL base (http://3.139.232.5:5000)
+const API_BASE_URL = import.meta.env.VITE_API_URL; 
+
 const ResetPassword = ({ email, onBackToLogin, onBackToForgot }) => {
   const [code, setCode] = useState(['', '', '', '', '', '']);
   const [newPassword, setNewPassword] = useState('');
@@ -53,8 +56,8 @@ const ResetPassword = ({ email, onBackToLogin, onBackToForgot }) => {
     setMessage({ text: '', type: '' });
 
     try {
-      // 🔹 Petición real al backend Flask
-      const res = await axios.post('http://localhost:5000/reset_password', {
+      // 🚨 2. REEMPLAZO: Usar API_BASE_URL en lugar de localhost
+      const res = await axios.post(`${API_BASE_URL}/reset_password`, {
         email,
         codigo: verificationCode,
         new_password: newPassword,
@@ -77,6 +80,7 @@ const ResetPassword = ({ email, onBackToLogin, onBackToForgot }) => {
       setIsLoading(false);
     }
   };
+  // ... (el resto del componente de renderizado que no has incluido)
 
   return (
     <div className="forgot-password-container">

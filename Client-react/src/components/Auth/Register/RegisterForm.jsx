@@ -5,128 +5,62 @@ import { Footer } from "../../Layout/footer/Footer";
 import axios from "axios";
 import Swal from "sweetalert2"; // ✅ IMPORTANTE
 
+// 🚨 1. AÑADIR esta línea para obtener la URL base (http://3.139.232.5:5000)
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const RegisterForm = () => {
-  const [currentStep, setCurrentStep] = useState(1);
-  const totalSteps = 3;
-    const [isLoading, setIsLoading] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
+  const totalSteps = 3;
+    const [isLoading, setIsLoading] = useState(false);
 
-  const [formData, setFormData] = useState({
-    nombre: '',
-    apellido: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    telefono: '',
-    fecha_nacimiento: '',
-    genero: '',
-    direccion: '',
-    ciudad: '',
-    estado_provincia: '',
-    codigo_postal: '',
-    pais: '',
-    tipo_direccion: 'casa',
-    referral: '',
-    terms: false,
-    newsletter: false
-  });
+  const [formData, setFormData] = useState({
+    nombre: '',
+    apellido: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    telefono: '',
+    fecha_nacimiento: '',
+    genero: '',
+    direccion: '',
+    ciudad: '',
+    estado_provincia: '',
+    codigo_postal: '',
+    pais: '',
+    tipo_direccion: 'casa',
+    referral: '',
+    terms: false,
+    newsletter: false
+  });
 
-  const [showPassword, setShowPassword] = useState({
-    password: false,
-    confirmPassword: false
-  });
-  const [message, setMessage] = useState({ text: '', type: '' });
+// ... (Resto del código del componente)
 
-  const togglePasswordVisibility = (field) => {
-    setShowPassword(prev => ({
-      ...prev,
-      [field]: !prev[field]
-    }));
-  };
+  //  CORREGIDO: Manejo de submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
-  };
-
-  const handleCheckboxChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: prev[field].includes(value)
-        ? prev[field].filter(item => item !== value)
-        : [...prev[field], value]
-    }));
-  };
-
-  const showMessage = (text, type) => {
-    setMessage({ text, type });
-    setTimeout(() => setMessage({ text: '', type: '' }), 5000);
-  };
-
-  const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-  const validateStep = (step) => {
-    if (step === 1) {
-      const { nombre, apellido, email, password, confirmPassword,fecha_nacimiento  } = formData;
-        const [year, month, day] = fecha_nacimiento.includes("-")
-      ? fecha_nacimiento.split("-").map(Number)
-      : fecha_nacimiento.split("/").reverse().map(Number);
-      const currentYear = new Date().getFullYear();
-      if (!nombre || !apellido || !email || !password || !confirmPassword) {
-        showMessage('Por favor, completa todos los campos obligatorios.', 'error');
-        return false;
-      } else if (!isValidEmail(email)) {
-        showMessage('Por favor, ingresa un correo electrónico válido.', 'error');
-        return false;
-      } else if (password !== confirmPassword) {
-        showMessage('Las contraseñas no coinciden.', 'error');
-        return false;
-      } else if (password.length < 6) {
-        showMessage('La contraseña debe tener al menos 6 caracteres.', 'error');
-        return false;
-        
-      }else if(year < 1900 || year > currentYear) {
-      showMessage("La fecha de nacimiento no es válida.", "error");
-      return false;
-    }
-    }
-    return true;
-  };
-
-  const goToStep = (step) => {
-    if (step < 1 || step > totalSteps) return;
-    if (step > currentStep && !validateStep(currentStep)) return;
-    setCurrentStep(step);
-  };
-
-  //  CORREGIDO: Manejo de submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!formData.terms) {
-      showMessage('Debes aceptar los términos y condiciones.', 'error');
-      return;
-    }
-    setIsLoading(true);
-    try {
-      const response = await axios.post("http://127.0.0.1:5000/Signup", {
-        Nombre: formData.nombre,
-        Apellido: formData.apellido,
-        Email: formData.email,
-        Password: formData.password,
-        Telefono: formData.telefono,
-        Fecha_nacimiento: formData.fecha_nacimiento,
-        Genero: formData.genero,
-        Direccion: formData.direccion,
-        Ciudad: formData.ciudad,
-        Estado_provincia: formData.estado_provincia,
-        Codigo_postal: formData.codigo_postal,
-        Pais: formData.pais,
-        Tipo_direccion: formData.tipo_direccion,
-      });
-
+    if (!formData.terms) {
+      showMessage('Debes aceptar los términos y condiciones.', 'error');
+      return;
+    }
+    setIsLoading(true);
+    try {
+      // 🚨 2. REEMPLAZO: Usar API_BASE_URL en lugar de la URL estática
+      const response = await axios.post(`${API_BASE_URL}/Signup`, {
+        Nombre: formData.nombre,
+        Apellido: formData.apellido,
+        Email: formData.email,
+        Password: formData.password,
+        Telefono: formData.telefono,
+        Fecha_nacimiento: formData.fecha_nacimiento,
+        Genero: formData.genero,
+        Direccion: formData.direccion,
+        Ciudad: formData.ciudad,
+        Estado_provincia: formData.estado_provincia,
+        Codigo_postal: formData.codigo_postal,
+        Pais: formData.pais,
+        Tipo_direccion: formData.tipo_direccion,
+      });
       console.log(" Registro exitoso:", response.data);
       Swal.fire("¡Cuenta creada exitosamente!", "Redirigiendo al login...", "success");
 

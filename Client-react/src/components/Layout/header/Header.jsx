@@ -3,39 +3,42 @@ import LogoutLink from '../../Auth/logout/LogoutLink';
 import './header.css';
 import { Link } from 'react-router-dom';
 
+// 🚨 1. AÑADIR esta línea para obtener la URL base (http://3.139.232.5:5000)
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 // Servicio para obtener los favoritos del usuario
 const favoritesService = {
-  async getFavoritesCount(userId) {
-    try {
-      const response = await fetch(`http://localhost:5000/favorites/${userId}`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching favorites count:', error);
-      return { status: 'error', data: [] };
-    }
-  }
+  async getFavoritesCount(userId) {
+    try {
+      // 🚨 2. REEMPLAZO en favoritesService
+      const response = await fetch(`${API_BASE_URL}/favorites/${userId}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching favorites count:', error);
+      return { status: 'error', data: [] };
+    }
+  }
 };
 const cartsService = {
-  async getCartsCount(userId){
-        try {
-      const response = await fetch(`http://localhost:5000/cart/${userId}`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching favorites count:', error);
-      return { status: 'error', data: [] };
-    }
-  }
+  async getCartsCount(userId){
+        try {
+      // 🚨 3. REEMPLAZO en cartsService
+      const response = await fetch(`${API_BASE_URL}/cart/${userId}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching favorites count:', error);
+      return { status: 'error', data: [] };
+    }
+  }
 }
-
-
 
 
 

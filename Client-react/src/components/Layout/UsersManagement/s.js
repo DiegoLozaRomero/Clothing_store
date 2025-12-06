@@ -11,37 +11,40 @@ import { openEditor } from "react-profile";
 import axios from "axios";
 import Swal from "sweetalert2";
 
+// 🚨 1. AÑADIR esta línea para obtener la URL base (http://3.139.232.5:5000)
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 export default function Perfil() {
-  const [user, setUser] = useState(null);
-  const [activeSection, setActiveSection] = useState("personal");
+  const [user, setUser] = useState(null);
+  const [activeSection, setActiveSection] = useState("personal");
 
 // Direcciones del usuario desde la API
 const [addresses, setAddresses] = useState([]);
 
 const fetchAddresses = async () => {
-  if (!user?.id) return;
-  try {
-    const res = await axios.get(`http://127.0.0.1:5000/user/${user.id}/addresses`);
-    if (res.data.direcciones && res.data.direcciones.length > 0) {
-      const mapped = res.data.direcciones.map((addr) => ({
-        id: addr.id,
-        street: addr.direccion,
-        city: addr.ciudad,
-        state: addr.estado_provincia,
-        zip: addr.codigo_postal,
-        country: addr.pais,
-        tipo: addr.tipo_direccion,
-        isDefault: addr.principal === 1 || addr.principal === true,
-      }));
-      setAddresses(mapped);
-    } else {
-      setAddresses([]);
-    }
-  } catch (error) {
-    console.error("Error al cargar direcciones:", error);
-  }
+  if (!user?.id) return;
+  try {
+    // 🚨 2. REEMPLAZO en fetchAddresses
+    const res = await axios.get(`${API_BASE_URL}/user/${user.id}/addresses`);
+    if (res.data.direcciones && res.data.direcciones.length > 0) {
+      const mapped = res.data.direcciones.map((addr) => ({
+        id: addr.id,
+        street: addr.direccion,
+        city: addr.ciudad,
+        state: addr.estado_provincia,
+        zip: addr.codigo_postal,
+        country: addr.pais,
+        tipo: addr.tipo_direccion,
+        isDefault: addr.principal === 1 || addr.principal === true,
+      }));
+      setAddresses(mapped);
+    } else {
+      setAddresses([]);
+    }
+  } catch (error) {
+    console.error("Error al cargar direcciones:", error);
+  }
 };
-
 // Luego el useEffect solo la llama
 useEffect(() => {
   if (user?.id) fetchAddresses();
@@ -110,9 +113,10 @@ const setAsDefault = async (addressId) => {
   if (!window.confirm("¿Establecer esta dirección como principal?")) return;
 
   try {
-    const res = await axios.put(`http://127.0.0.1:5000/address/${addressId}/set_default`, {
-      user_id: user.id,
-    });
+    // 🚨 3. REEMPLAZO en setAsDefault
+    const res = await axios.put(`${API_BASE_URL}/address/${addressId}/set_default`, {
+      user_id: user.id,
+    });
 
     if (res.data.status === "success") {
       const updated = addresses.map((a) => ({
@@ -134,9 +138,10 @@ const deleteAddress = async (addressId) => {
   if (!window.confirm("¿Eliminar esta dirección?")) return;
 
   try {
-    const res = await axios.delete(`http://127.0.0.1:5000/address/${addressId}`, {
-      headers: { "Content-Type": "application/json" },
-    });
+    // 🚨 4. REEMPLAZO en deleteAddress
+    const res = await axios.delete(`${API_BASE_URL}/address/${addressId}`, {
+      headers: { "Content-Type": "application/json" },
+    });
 
     if (res.data.status === "success") {
       setAddresses((prev) => prev.filter((a) => a.id !== addressId));
@@ -294,9 +299,10 @@ const addNewAddress = async () => {
       ...formValues,
     };
 
-    const res = await axios.post("http://127.0.0.1:5000/address", newAddress, {
-      headers: { "Content-Type": "application/json" },
-    });
+    // 🚨 5. REEMPLAZO en addNewAddress
+    const res = await axios.post(`${API_BASE_URL}/address`, newAddress, {
+      headers: { "Content-Type": "application/json" },
+    });
 // Cuando agregas una nueva dirección
 if (res.data.status === "success") {
   const nueva = {
@@ -507,10 +513,10 @@ if (formValues.isDefault) {
 
     try {
       // aquí mandamos el objeto user normalizado (con campos Nombre, Apellido, Email, etc.)
-      const res = await axios.put("http://127.0.0.1:5000/UpdateUser", user, {
-        headers: { "Content-Type": "application/json" },
-      });
-
+      // 🚨 6. REEMPLAZO en handleSubmit
+      const res = await axios.put(`${API_BASE_URL}/UpdateUser`, user, {
+        headers: { "Content-Type": "application/json" },
+      });
       Swal.close();
 
       if (res.data.status === "success") {

@@ -3,6 +3,9 @@ import axios from 'axios';
 import './ForgotPassword.css';
 import Swal from 'sweetalert2';
 
+// 🚨 AÑADIR ESTA LÍNEA para obtener la URL base (http://3.139.232.5:5000)
+const API_BASE_URL = import.meta.env.VITE_API_URL; 
+
 const ForgotPassword = ({ onBackToLogin, onShowResetPassword }) => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState({ text: '', type: '' });
@@ -25,8 +28,8 @@ const ForgotPassword = ({ onBackToLogin, onShowResetPassword }) => {
     setMessage({ text: '', type: '' });
 
     try {
-      //  Llamada real al backend Flask
-      const response = await axios.post("http://127.0.0.1:5000/forgot_password", {
+      // 🚨 REEMPLAZO: Usar la variable API_BASE_URL en lugar de la URL estática
+      const response = await axios.post(`${API_BASE_URL}/forgot_password`, {
         email: email
       });
 

@@ -6,55 +6,61 @@ import { Footer } from '../../Layout/footer/Footer';
 import axios from "axios";
 import Swal from "sweetalert2";
 
+// 🚨 1. AÑADIR esta línea para obtener la URL base (http://3.139.232.5:5000)
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 // Servicio para manejar las llamadas a la API
 const apiService = {
-  async getCart(userId) {
-    try {
-      const response = await fetch(`http://localhost:5000/cart/${userId}`);
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching cart:', error);
-      throw error;
-    }
-  },
+  async getCart(userId) {
+    try {
+      // 🚨 2. REEMPLAZO en getCart
+      const response = await fetch(`${API_BASE_URL}/cart/${userId}`);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching cart:', error);
+      throw error;
+    }
+  },
 
-  async createOrder(orderData) {
-    try {
-      console.log('📤 Enviando orden a la API:', orderData);
-      const response = await fetch('http://localhost:5000/orders', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(orderData)
-      });
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      console.log('📥 Respuesta de la API de órdenes:', data);
-      return data;
-    } catch (error) {
-      console.error('Error creating order:', error);
-      throw error;
-    }
-  },
+  async createOrder(orderData) {
+    try {
+      console.log('📤 Enviando orden a la API:', orderData);
+      // 🚨 3. REEMPLAZO en createOrder
+      const response = await fetch(`${API_BASE_URL}/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('📥 Respuesta de la API de órdenes:', data);
+      return data;
+    } catch (error) {
+      console.error('Error creating order:', error);
+      throw error;
+    }
+  },
 
-  async clearCart(userId) {
-    try {
-      const response = await fetch(`http://localhost:5000/cart/${userId}/clear`, {
-        method: 'DELETE'
-      });
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error clearing cart:', error);
-      throw error;
-    }
-  }
+  async clearCart(userId) {
+    try {
+      // 🚨 4. REEMPLAZO en clearCart
+      const response = await fetch(`${API_BASE_URL}/cart/${userId}/clear`, {
+        method: 'DELETE'
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error clearing cart:', error);
+      throw error;
+    }
+  }
 };
 
 export default function Pagar() {

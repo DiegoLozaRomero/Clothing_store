@@ -3,72 +3,77 @@ import styles from "./ProductManagement.module.css";
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
+// 🚨 1. AÑADIR esta línea para obtener la URL base (http://3.139.232.5:5000)
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 export default function ProductManagement() {
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [filters, setFilters] = useState({
-    search: '',
-    categoria: '',
-    estado: ''
-  });
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [filters, setFilters] = useState({
+    search: '',
+    categoria: '',
+    estado: ''
+  });
 
-  // Cargar productos
-  const loadProducts = async () => {
-    try {
-      setLoading(true);
-      const params = new URLSearchParams();
-      
-      if (filters.search) params.append('search', filters.search);
-      if (filters.categoria) params.append('categoria', filters.categoria);
-      if (filters.estado) params.append('estado', filters.estado);
-      
-      const response = await axios.get(`http://127.0.0.1:5000/admin/products?${params}`);
-      
-      if (response.data.status === 'success') {
-        setProducts(response.data.data.products);
-      } else {
-        throw new Error(response.data.message);
-      }
-    } catch (error) {
-      console.error('Error loading products:', error);
-      Swal.fire({
-        title: 'Error',
-        text: 'No se pudieron cargar los productos',
-        icon: 'error',
-        confirmButtonText: 'Entendido'
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Cargar productos
+  const loadProducts = async () => {
+    try {
+      setLoading(true);
+      const params = new URLSearchParams();
+      
+      if (filters.search) params.append('search', filters.search);
+      if (filters.categoria) params.append('categoria', filters.categoria);
+      if (filters.estado) params.append('estado', filters.estado);
+      
+      // 🚨 2. REEMPLAZO en loadProducts
+      const response = await axios.get(`${API_BASE_URL}/admin/products?${params}`);
+      
+      if (response.data.status === 'success') {
+        setProducts(response.data.data.products);
+      } else {
+        throw new Error(response.data.message);
+      }
+    } catch (error) {
+      console.error('Error loading products:', error);
+      Swal.fire({
+        title: 'Error',
+        text: 'No se pudieron cargar los productos',
+        icon: 'error',
+        confirmButtonText: 'Entendido'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // Cargar categorías
-  const loadCategories = async () => {
-    try {
-      console.log('🔄 Cargando categorías...');
-      const response = await axios.get('http://127.0.0.1:5000/admin/categories');
-      console.log('✅ Respuesta de categorías:', response.data);
-      
-      if (response.data.status === 'success') {
-        setCategories(response.data.data);
-        console.log(`✅ ${response.data.data.length} categorías cargadas`);
-      } else {
-        console.error('❌ Error en respuesta:', response.data);
-      }
-    } catch (error) {
-      console.error('❌ Error loading categories:', error);
-      console.error('❌ Response data:', error.response?.data);
-      console.error('❌ Response status:', error.response?.status);
-      
-      Swal.fire({
-        title: 'Error',
-        text: `Error al cargar categorías: ${error.response?.data?.message || error.message}`,
-        icon: 'error',
-        confirmButtonText: 'Entendido'
-      });
-    }
-  };
+  // Cargar categorías
+  const loadCategories = async () => {
+    try {
+      console.log('🔄 Cargando categorías...');
+      // 🚨 3. REEMPLAZO en loadCategories
+      const response = await axios.get(`${API_BASE_URL}/admin/categories`);
+      console.log('✅ Respuesta de categorías:', response.data);
+      
+      if (response.data.status === 'success') {
+        setCategories(response.data.data);
+        console.log(`✅ ${response.data.data.length} categorías cargadas`);
+      } else {
+        console.error('❌ Error en respuesta:', response.data);
+      }
+    } catch (error) {
+      console.error('❌ Error loading categories:', error);
+      console.error('❌ Response data:', error.response?.data);
+      console.error('❌ Response status:', error.response?.status);
+      
+      Swal.fire({
+        title: 'Error',
+        text: `Error al cargar categorías: ${error.response?.data?.message || error.message}`,
+        icon: 'error',
+        confirmButtonText: 'Entendido'
+      });
+    }
+  };
 
   useEffect(() => {
     loadProducts();
