@@ -15,6 +15,15 @@ import base64
 # CONFIGURACIÓN INICIAL
 # =====================================
 app = Flask(__name__)
+# =====================================
+# CONFIGURACIÓN DE CORS
+# =====================================
+# 🚨 1. Define el origen permitido usando tu dominio de Amplify:
+FRONTEND_ORIGIN = "https://master.dc988118koftz.amplifyapp.com" 
+
+# 🚨 2. Aplica CORS, permitiendo solo ese origen:
+# Nota: Ya importaste CORS en la línea superior 'from flask_cors import CORS, cross_origin'
+CORS(app, resources={r"/*": {"origins": FRONTEND_ORIGIN}})
 DIALOGFLOW_URL = "https://dialogflow.googleapis.com/v2/projects/PROJECT-ID/agent/sessions/123456:detectIntent"
 app.config['SECRET_KEY'] = 'Fashion-Luxe'
 
@@ -73,30 +82,27 @@ def decrypt_id(encrypted_id):
 
 # ========
 # Base de datos MySQL
-def create_database():
-    try:
-        connection = mysql.connector.connect(
-            host='localhost',
-            user='root',
-            password='root123'
-        )
-        if connection.is_connected():
-            cursor = connection.cursor()
-            cursor.execute("CREATE DATABASE IF NOT EXISTS tienda_online")
-            print(" Base de datos 'tienda_online' creada/verificada")
-    except Error as e:
-        print(f" Error creando base de datos: {e}")
-    finally:
-        if connection.is_connected():
-            cursor.close()
-            connection.close()
-
-create_database()
-
+# ❌ COMENTAR O ELIMINAR ESTA FUNCIÓN. NO NECESITAS CREAR LA DB EN RDS.
+# def create_database():
+#     try:
+#         connection = mysql.connector.connect(
+#             host='localhost',
+#             user='root',
+#             password='root123'
+#         )
+#         # ... (resto de la función)
+#     except Error as e:
+#         print(f" Error creando base de datos: {e}")
+#     finally:
+#         # ...
+# 
+# create_database() # ❌ ELIMINAR ESTA LLAMADA TAMBIÉN.
 # Configuración SQLAlchemy
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:root123@localhost/tienda_online"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SQLALCHEMY_ECHO"] = True
+# 🚨 REEMPLAZA ESTA LÍNEA por la configuración de tu RDS:
+# app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:root123@localhost/tienda_online"
+
+# ✅ LÍNEA NUEVA (Usando tu RDS y credenciales):
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://admin:admin123@integradoraclothingshop.c5iseo6a0s94.us-east-2.rds.amazonaws.com/integradoraclothingshop"
 
 # Inicializaciones
 bcrypt = Bcrypt(app)
