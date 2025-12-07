@@ -1,15 +1,12 @@
-// vite.config.js (Corregido)
-
+// vite.config.js
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react'; // Asumiendo que usas React
+import react from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
 export default defineConfig({
+  base: '/',  // 🚨 NECESARIO para producción en Amplify
   plugins: [react()],
   build: {
-    // Aquí está el cambio que hicimos antes (para solucionar el CSS)
     cssMinify: 'esbuild',
-    outDir: 'dist', 
+    outDir: 'dist',
   },
-  // ... cualquier otra configuración
 });
