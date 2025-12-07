@@ -1,4 +1,4 @@
-// App.jsx
+// Cambio forzado para que Git lo detecte
 import { Routes, Route } from 'react-router-dom'
 import Home from './components/pages/home/home.jsx'
 import LoginForm from './components/Auth/LoginForm/LoginForm.jsx'
@@ -37,41 +37,42 @@ import PantalonDetail from './components/pages/Private/PantalonDetail.jsx'
 export default function App() {
   return (
     <GoogleOAuthProvider clientId="915284224791-053n49a9auhgm7h1q90k3kfso8g52ktb.apps.googleusercontent.com">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<LoginForm />} />
-        <Route path='/Registro' element={<RegisterForm />} />
-        <Route path='/Shop' element={<Shop />} />
-        <Route path='/Perfil' element={<Perfil />} />
-        <Route path='/Favorito' element={<Favorito />} />
-        <Route path='/Carrito' element={<Carrito />} />
-        <Route path='/Pagar' element={<Pagar />} />
-        <Route path='/Admin' element={<Admin />} />
-        <Route path='/SalesChart' element={<SalesChart />} />
-        <Route path='/ProductChart' element={<ProductChart />} />
-        <Route path='/UsersManagement' element={<UsersManagement />} />
-        <Route path='/OrdersManagement' element={<OrdersManagement />} />
-        <Route path='/ProductManagement' element={<ProductManagement />} />
-        <Route path='/ReportAnalyze' element={<ReportAnalyze />} />
-        <Route path='/Notifications' element={<Notifications />} />
-        <Route path='/Update_Password' element={<Update_Password />} />
-        <Route path='/LogoutLink' element={<LogoutLink />} />
-        <Route path='/ArtHombre' element={<ArtHombre />} />
-        <Route path='/Hombre' element={<Hombre />} />
-        <Route path='/Mujer' element={<Mujer />} />
-        <Route path='/Accesorios' element={<Accesorios />} />
-        <Route path='/Ofertas' element={<Ofertas />} />
-        <Route path='/PantalonHombres' element={<PantalonHombres />} />
-        <Route path='/Chaquetas' element={<Chaquetas />} />
-        <Route path="/order-details/:orderId" element={<OrderDetails />} />
-        <Route path="/BlusasMujer" element={<BlusasMujer />} />
-        <Route path="/ArtMujerVestidos" element={<ArtMujerVestidos />} />
-        <Route path="/ArtMujerZapatos" element={<ArtMujerZapatos />} />
-        <Route path="/ArtHombreZapatosTenis" element={<ArtHombreZapatosTenis />} />
-        <Route path="/AccesoriosRelojes" element={<AccesoriosRelojes />} />
-        <Route path="/PantalonHombres/:id" element={<PantalonDetail />} />
-        <Route path="*" element={<div>Página no encontrada</div>} />
-      </Routes>
-    </GoogleOAuthProvider>
+      <App />
+    </GoogleOAuthProvider>,
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<LoginForm />} />
+      <Route path='/Registro' element={<RegisterForm/>} />
+      <Route path='/Shop' element={  <Shop/>} />
+      <Route path='/Perfil' element={<Perfil/>} />  
+      <Route path='/Favorito' element={<Favorito/>} />
+      <Route path='/Carrito' element={<Carrito/>}/>
+      <Route path='/Pagar' element={<Pagar/>}/>
+      <Route path='/Admin' element={<Admin/>}/>
+      <Route path='/SalesChart' element={<SalesChart/>}/>
+      <Route path='/ProductChart' element={<ProductChart/>}/>
+      <Route path='/UsersManagement' element={<UsersManagement/>}/>
+      <Route path='/OrdersManagement' element={<OrdersManagement/>}/>
+      <Route path='/ProductManagement' element={<ProductManagement/>}/>
+      <Route path='/ReportAnalyze' element={<ReportAnalyze/>}/>
+      <Route path='/Notifications' element={<Notifications/>}/>
+      <Route path='/Update_Password' element={<Update_Password/>}/>
+      <Route path='/LogoutLink' element={<LogoutLink/>}/>
+      <Route path='/ArtHombre' element={<ArtHombre/>}/>
+      <Route path='/Hombre' element={<Hombre/>}/>
+      <Route path='/Mujer' element={<Mujer/>}/>
+      <Route path='/Accesorios' element={<Accesorios/>}/>
+      <Route path='/Ofertas' element={<Ofertas/>}/>
+      <Route path='/PantalonHombres' element={<PantalonHombres/>}/>
+      <Route path='/Chaquetas' element={<Chaquetas/>}/>
+      <Route path="/order-details/:orderId" element={<OrderDetails />} />
+      <Route path="/BlusasMujer" element={<BlusasMujer />} />
+      <Route path="/ArtMujerVestidos" element={<ArtMujerVestidos />} />
+      <Route path="/ArtMujerZapatos" element={<ArtMujerZapatos />} />
+      <Route path="/ArtHombreZapatosTenis" element={<ArtHombreZapatosTenis />} />
+      <Route path="/AccesoriosRelojes" element={<AccesoriosRelojes />} />
+      <Route path="/PantalonHombres/:id" element={<PantalonDetail />} />
+      <Route path="*" element={<div>Página no encontrada</div>} />
+    </Routes>
   )
 }
