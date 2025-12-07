@@ -1,20 +1,18 @@
 version: 1
 frontend:
   phases:
-    # Fase de PRE-BUILD: Moverse e instalar dependencias
+    # 1. Fase de PRE-BUILD: Entrar a la carpeta del frontend e instalar
     preBuild:
       commands:
-        # Paso 1: Moverse al directorio del frontend (si ya lo tenías así)
-        - cd Client-react 
-        # Paso 2: Usar --legacy-peer-deps para forzar la instalación
-        - npm install --legacy-peer-deps  # <-- ¡CAMBIO CLAVE!
-    # Fase de BUILD: Ejecutar el build
+        - cd Client-react  # <-- ¡CRÍTICO! Moverse al directorio del package.json
+        - npm install --legacy-peer-deps # <-- CRÍTICO! Solución al error ERESOLVE
+    # 2. Fase de BUILD: Ejecutar el build dentro de Client-react
     build:
       commands:
         - npm run build
-  # Artefactos: Definir la ruta COMPLETA del código compilado
+  # 3. Artefactos: Definir la ruta COMPLETA del código compilado (desde la raíz del repositorio)
   artifacts:
-    baseDirectory: Client-react/dist
+    baseDirectory: Client-react/dist # <-- ¡CRÍTICO! Ruta completa para el hosting
     files:
       - '**/*'
   cache:
