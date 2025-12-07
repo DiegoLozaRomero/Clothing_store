@@ -29,6 +29,34 @@ const RegisterForm = () => {
       setTimeout(() => setMessage({ text: '', type: '' }), 5000); 
   };
 
+  // ✅ CORRECCIÓN 3: ESTADO formData y función handleInputChange
+  const [formData, setFormData] = useState({
+    nombre: '',
+    apellido: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    telefono: '',
+    fecha_nacimiento: '',
+    genero: '',
+    direccion: '',
+    ciudad: '',
+    estado_provincia: '',
+    codigo_postal: '',
+    pais: '',
+    tipo_direccion: 'casa',
+    terms: false,
+    newsletter: false
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
   //  CORREGIDO: Manejo de submit
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,7 +97,6 @@ const RegisterForm = () => {
       if (error.response) {
         console.error(" Respuesta del servidor:", error.response.data);
         console.error(" Código de estado:", error.response.status);
-        // Adicional: Si el servidor devuelve un error, se puede mostrar usando showMessage aquí
         showMessage(error.response.data.message || "Error al registrar la cuenta", 'error');
       } else if (error.request) {
         console.error(" No hubo respuesta del servidor:", error.request);
