@@ -11,7 +11,10 @@ const API_BASE_URL = import.meta.env.VITE_API_URL;
 const RegisterForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 3;
-    const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // ✅ CORRECCIÓN 1: INSERCIÓN del estado 'message'
+  const [message, setMessage] = useState({ text: '', type: '' }); 
 
   const [formData, setFormData] = useState({
     nombre: '',
@@ -35,6 +38,14 @@ const RegisterForm = () => {
 
 // ... (Resto del código del componente)
 
+  // ✅ CORRECCIÓN 2: INSERCIÓN de la función 'showMessage'
+  const showMessage = (text, type) => {
+      setMessage({ text, type });
+      // Limpiar el mensaje después de 5 segundos
+      setTimeout(() => setMessage({ text: '', type: '' }), 5000); 
+  };
+
+
   //  CORREGIDO: Manejo de submit
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,7 +56,7 @@ const RegisterForm = () => {
     }
     setIsLoading(true);
     try {
-      // 🚨 2. REEMPLAZO: Usar API_BASE_URL en lugar de la URL estática
+      // 🚨 2. REEMPLAZO: Usar API_BASE_URL en lugar de la URL estática
       const response = await axios.post(`${API_BASE_URL}/Signup`, {
         Nombre: formData.nombre,
         Apellido: formData.apellido,
@@ -61,31 +72,35 @@ const RegisterForm = () => {
         Pais: formData.pais,
         Tipo_direccion: formData.tipo_direccion,
       });
-      console.log(" Registro exitoso:", response.data);
-      Swal.fire("¡Cuenta creada exitosamente!", "Redirigiendo al login...", "success");
+      console.log(" Registro exitoso:", response.data);
+      Swal.fire("¡Cuenta creada exitosamente!", "Redirigiendo al login...", "success");
 
-      //  Redirigir después del éxito
-      setTimeout(() => {
-        window.location.href = "/login";
-      }, 2000);
+      //  Redirigir después del éxito
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000);
 
-    } catch (error) {
-      console.error(" Error en registro:", error);
+    } catch (error) {
+      console.error(" Error en registro:", error);
 
-      if (error.response) {
-        console.error(" Respuesta del servidor:", error.response.data);
-        console.error(" Código de estado:", error.response.status);
-      } else if (error.request) {
-        console.error(" No hubo respuesta del servidor:", error.request);
-      } else {
-        console.error(" Error al configurar la solicitud:", error.message);
-      }
+      if (error.response) {
+        console.error(" Respuesta del servidor:", error.response.data);
+        console.error(" Código de estado:", error.response.status);
+          // Adicional: Si el servidor devuelve un error, se puede mostrar usando showMessage aquí
+          showMessage(error.response.data.message || "Error al registrar la cuenta", 'error');
+      } else if (error.request) {
+        console.error(" No hubo respuesta del servidor:", error.request);
+          showMessage("No se pudo conectar al servidor.", 'error');
+      } else {
+        console.error(" Error al configurar la solicitud:", error.message);
+          showMessage("Error interno.", 'error');
+      }
 
-      Swal.fire("Error al crear la cuenta", "Intenta nuevamente.", "error");
-    }finally{
-      setIsLoading(false);
-    }
-  };
+      Swal.fire("Error al crear la cuenta", "Intenta nuevamente.", "error");
+    }finally{
+      setIsLoading(false);
+    }
+  };
 
 
   return (
