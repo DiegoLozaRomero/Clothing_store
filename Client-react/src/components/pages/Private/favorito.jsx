@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 const favoritesService = {
   async getFavorites(userId) {
     try {
-      const response = await fetch(`http://localhost:5000/favorites/${userId}`);
+      const response = await fetch(`${API_BASE_URL}/favorites/${userId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -23,7 +23,7 @@ const favoritesService = {
 
   async removeFromFavorites(userId, productId) {
     try {
-      const response = await fetch('http://localhost:5000/favorites/remove', {
+      const response = await fetch('${API_BASE_URL}/favorites/remove', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

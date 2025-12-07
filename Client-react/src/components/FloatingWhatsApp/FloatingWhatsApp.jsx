@@ -354,7 +354,7 @@ case 'email':
     // Aquí puedes enviar el email a tu backend
     try {
       // Opción 1: Enviar a tu API (recomendado)
-      const response = await fetch('http://localhost:5000/api/contact/email', {
+      const response = await fetch('${API_BASE_URL}/api/contact/email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -424,7 +424,7 @@ case 'email':
     setIsTyping(true);
     
     try {
-      const response = await fetch('http://localhost:5000/api/tracking', {
+      const response = await fetch('${API_BASE_URL}/api/tracking', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -487,7 +487,7 @@ case 'email':
     setIsTyping(true);
     
     try {
-      const response = await fetch('http://localhost:5000/api/tracking/email', {
+      const response = await fetch('${API_BASE_URL}/api/tracking/email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

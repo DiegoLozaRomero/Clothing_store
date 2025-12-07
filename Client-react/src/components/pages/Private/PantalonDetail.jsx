@@ -10,7 +10,7 @@ import { FloatingWhatsApp } from '../../FloatingWhatsApp/FloatingWhatsApp';
 const apiService = {
   async getProductById(productId) {
     try {
-      const response = await fetch(`http://localhost:5000/products/${productId}`);
+      const response = await fetch(`${API_BASE_URL}/products/${productId}`);
       const data = await response.json();
       return data;
     } catch (error) {
@@ -89,7 +89,7 @@ export default function PantalonDetail() {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/cart/add', {
+      const response = await fetch('${API_BASE_URL}/cart/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

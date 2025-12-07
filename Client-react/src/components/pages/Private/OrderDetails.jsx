@@ -23,11 +23,11 @@ const apiService = {
       if (isLikelyEncrypted) {
         console.log('🔐 ID parece encriptado, usando endpoint especial');
         // Usar el endpoint que maneja IDs encriptados
-        url = `http://localhost:5000/orders/encrypted/${encodeURIComponent(orderId)}`;
+        url = `${API_BASE_URL}/orders/encrypted/${encodeURIComponent(orderId)}`;
       } else {
         console.log('📋 ID parece normal');
         // Usar el endpoint normal
-        url = `http://localhost:5000/orders/${orderId}`;
+        url = `${API_BASE_URL}/orders/${orderId}`;
       }
       
       console.log(`📡 Llamando a: ${url}`);
@@ -38,7 +38,7 @@ const apiService = {
         // Si falla con el endpoint especial, intentar con el normal
         if (isLikelyEncrypted) {
           console.log('⚠️ Falló con endpoint encriptado, intentando con normal...');
-          const normalUrl = `http://localhost:5000/orders/${orderId}`;
+          const normalUrl = `${API_BASE_URL}/orders/${orderId}`;
           const normalResponse = await fetch(normalUrl);
           
           if (!normalResponse.ok) {

@@ -14,7 +14,7 @@ import { useLocation,useNavigate,useSearchParams } from "react-router-dom"; // C
 const apiService = {
   async getUserOrders(userId) {
     try {
-      const response = await fetch(`http://localhost:5000/orders/user/${userId}`);
+      const response = await fetch(`${API_BASE_URL}/orders/user/${userId}`);
       const data = await response.json();
       return data;
     } catch (error) {
@@ -25,7 +25,7 @@ const apiService = {
 
   async getOrderDetails(orderId) {
     try {
-      const response = await fetch(`http://localhost:5000/orders/${orderId}`);
+      const response = await fetch(`${API_BASE_URL}/orders/${orderId}`);
       const data = await response.json();
       return data;
     } catch (error) {

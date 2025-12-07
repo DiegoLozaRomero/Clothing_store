@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 const apiService = {
   async getProducts() {
     try {
-      const response = await fetch('http://localhost:5000/products');
+      const response = await fetch('${API_BASE_URL}/products');
       const data = await response.json();
       return data;
     } catch (error) {
@@ -21,7 +21,7 @@ const apiService = {
 
   async getCategories() {
     try {
-      const response = await fetch('http://localhost:5000/categories');
+      const response = await fetch('${API_BASE_URL}/categories');
       const data = await response.json();
       return data;
     } catch (error) {
@@ -33,7 +33,7 @@ const apiService = {
   // SERVICIO DE FAVORITOS
   async getFavorites(userId) {
     try {
-      const response = await fetch(`http://localhost:5000/favorites/${userId}`);
+      const response = await fetch(`${API_BASE_URL}/favorites/${userId}`);
       const data = await response.json();
       return data;
     } catch (error) {
@@ -44,7 +44,7 @@ const apiService = {
 
   async addToFavorites(userId, productId) {
     try {
-      const response = await fetch('http://localhost:5000/favorites/add', {
+      const response = await fetch('${API_BASE_URL}/favorites/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ const apiService = {
 
   async removeFromFavorites(userId, productId) {
     try {
-      const response = await fetch('http://localhost:5000/favorites/remove', {
+      const response = await fetch('${API_BASE_URL}/favorites/remove', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const apiService = {
 
   async checkFavorite(userId, productId) {
     try {
-      const response = await fetch('http://localhost:5000/favorites/check', {
+      const response = await fetch('${API_BASE_URL}/favorites/check', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ const apiService = {
   // SERVICIO DEL CARRITO
   async getCart(userId) {
     try {
-      const response = await fetch(`http://localhost:5000/cart/${userId}`);
+      const response = await fetch(`${API_BASE_URL}/cart/${userId}`);
       const data = await response.json();
       return data;
     } catch (error) {
@@ -116,7 +116,7 @@ const apiService = {
 
   async addToCart(userId, productId, cantidad = 1) {
     try {
-      const response = await fetch('http://localhost:5000/cart/add', {
+      const response = await fetch('${API_BASE_URL}/cart/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -137,7 +137,7 @@ const apiService = {
 
   async updateCartItem(itemId, cantidad) {
     try {
-      const response = await fetch('http://localhost:5000/cart/update', {
+      const response = await fetch('${API_BASE_URL}/cart/update', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -157,7 +157,7 @@ const apiService = {
 
   async removeFromCart(itemId) {
     try {
-      const response = await fetch('http://localhost:5000/cart/remove', {
+      const response = await fetch('${API_BASE_URL}/cart/remove', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -176,7 +176,7 @@ const apiService = {
 
   async clearCart(userId) {
     try {
-      const response = await fetch(`http://localhost:5000/cart/${userId}/clear`, {
+      const response = await fetch(`${API_BASE_URL}/cart/${userId}/clear`, {
         method: 'DELETE'
       });
       const data = await response.json();
@@ -189,7 +189,7 @@ const apiService = {
 
   async getCartCount(userId) {
     try {
-      const response = await fetch(`http://localhost:5000/cart/${userId}/count`);
+      const response = await fetch(`${API_BASE_URL}/cart/${userId}/count`);
       const data = await response.json();
       return data;
     } catch (error) {

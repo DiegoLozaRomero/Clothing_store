@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 const apiService = {
   async getCart(userId) {
     try {
-      const response = await fetch(`http://localhost:5000/cart/${userId}`);
+      const response = await fetch(`${API_BASE_URL}/cart/${userId}`);
       const data = await response.json();
       return data;
     } catch (error) {
@@ -21,7 +21,7 @@ const apiService = {
 
   async updateCartItem(itemId, cantidad) {
     try {
-      const response = await fetch('http://localhost:5000/cart/update', {
+      const response = await fetch('${API_BASE_URL}/cart/update', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ const apiService = {
 
   async removeFromCart(itemId) {
     try {
-      const response = await fetch('http://localhost:5000/cart/remove', {
+      const response = await fetch('${API_BASE_URL}/cart/remove', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const apiService = {
 
   async clearCart(userId) {
     try {
-      const response = await fetch(`http://localhost:5000/cart/${userId}/clear`, {
+      const response = await fetch(`${API_BASE_URL}/cart/${userId}/clear`, {
         method: 'DELETE'
       });
       const data = await response.json();
@@ -73,7 +73,7 @@ const apiService = {
 
   async getProducts() {
     try {
-      const response = await fetch('http://localhost:5000/products');
+      const response = await fetch('${API_BASE_URL}/products');
       const data = await response.json();
       return data;
     } catch (error) {
@@ -84,7 +84,7 @@ const apiService = {
 
   async addToCart(userId, productId, cantidad = 1) {
     try {
-      const response = await fetch('http://localhost:5000/cart/add', {
+      const response = await fetch('${API_BASE_URL}/cart/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
