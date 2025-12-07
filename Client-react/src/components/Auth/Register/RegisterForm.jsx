@@ -309,7 +309,3 @@ const RegisterForm = () => {
 };
 
 export default RegisterForm;
-<<<<<<< HEAD
-=======
-
->>>>>>> 6ea7e86f45589e202012e8bbc830b17d9a8c16d6
